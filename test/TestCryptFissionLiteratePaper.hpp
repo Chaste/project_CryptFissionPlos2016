@@ -18,7 +18,8 @@
  *
  * In this test we show how Chaste can be used to simulate a buckling ring of epithelial cells.
  * Details of the computational model can be found in
- * Langlands et al (2015) "Clustering of Lgr5+ cells initiates crypt fission in the intestinal stem cell niche".
+ * Langlands et al (2016) "Paneth cell-rich regions separated by a cluster of Lgr5+ cells initiate
+ * fission in the intestinal stem cell niche".
  *
  * == Including header files ==
  *
@@ -57,7 +58,7 @@
 class TestCryptFissionLiteratePaper : public AbstractCellBasedTestSuite
 {
 public:
-	void TestEpithelialLayerWithTargetProportion() throw(Exception)
+	void TestEpithelialLayerUndergoingFission() throw(Exception)
 	{
 		//Simulation time parameters
 		double dt = 0.005; //Set dt
