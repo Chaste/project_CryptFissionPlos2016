@@ -21,11 +21,11 @@ EpithelialLayerDataTrackingModifier<DIM>::~EpithelialLayerDataTrackingModifier()
 template<unsigned DIM>
 void EpithelialLayerDataTrackingModifier<DIM>::UpdateAtEndOfTimeStep(AbstractCellPopulation<DIM,DIM>& rCellPopulation)
 {
-    UpdateCellData(rCellPopulation);
-
-    CalculateModifierData(rCellPopulation);
-
-    *mpEpithelialLayerDataFile << "\n";
+//    UpdateCellData(rCellPopulation);
+//
+//    CalculateModifierData(rCellPopulation);
+//
+//    *mpEpithelialLayerDataFile << "\n";
 
 }
 
@@ -60,6 +60,10 @@ void EpithelialLayerDataTrackingModifier<DIM>::UpdateCellData(AbstractCellPopula
 template<unsigned DIM>
 void EpithelialLayerDataTrackingModifier<DIM>::UpdateAtEndOfSolve(AbstractCellPopulation<DIM,DIM>& rCellPopulation)
 {
+	UpdateCellData(rCellPopulation);
+
+	CalculateModifierData(rCellPopulation);
+
 	// Close output file.
     mpEpithelialLayerDataFile->close();
 }
