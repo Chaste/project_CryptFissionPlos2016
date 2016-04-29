@@ -53,8 +53,6 @@
 #include "EpithelialLayerAnoikisCellKiller.hpp" //Cell killer to remove proliferative cells that have detached from ring.
 #include "EpithelialLayerDataTrackingModifier.hpp" //Modifier for all the necessary data
 
-#include "Debug.hpp"
-
 class TestCryptFissionLiteratePaper : public AbstractCellBasedTestSuite
 {
 public:
