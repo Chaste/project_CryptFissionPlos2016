@@ -58,6 +58,8 @@ class TestCryptFissionLiteratePaper : public AbstractCellBasedTestSuite
 public:
 	void TestEpithelialLayerUndergoingFission() throw(Exception)
 	{
+		/* We first set all the simulation parameters. */
+
 		//Simulation time parameters
 		double dt = 0.005; //Set dt
 		double end_time = 100.0; //Set end time
@@ -72,9 +74,10 @@ public:
 		double stiffness_ratio = 4.5;
 
 
-		// Set the target proportion for stem cells. Note that the TARGET proportion and
-		// the ACTUAL proportion of stem cells will be different, due to cell death and
-		// mechanical heterogeneities.
+		/* Set the target proportion for stem cells. Note that the target proportion and
+		 * the actual proportion of stem cells will be different, due to cell death and
+		 * mechanical heterogeneities.
+		 */
 
 		double target_proportion = 0.3; //This corresponds to the 20% stem cell (80% Paneth cell) case
 
@@ -133,10 +136,10 @@ public:
 			}
 		}
 
-		// Create pointers to cell types and mutation states to track population numbers.
-		// Non-epithelial cells are differentiated, all proliferative epithelial cells will be transit cells
-		// (used to define cell cycle duration). In addition, stem cells are assigned a wildtype mutation state,
+		/* Define cell types: non-epithelial cells are differentiated, all proliferative epithelial cells
+		 * will be transit cells (to define cell cycle duration). In addition, stem cells are assigned a wildtype mutation state,
 		// while Paneth cells are assigned a Paneth cell mutation state.
+		 */
 
 		boost::shared_ptr<AbstractCellProperty> p_diff_type = CellPropertyRegistry::Instance()->Get<DifferentiatedCellProliferativeType>();
 		boost::shared_ptr<AbstractCellProperty> p_stem_type = CellPropertyRegistry::Instance()->Get<TransitCellProliferativeType>();
@@ -146,8 +149,10 @@ public:
 		//Create vector of cells
 		std::vector<CellPtr> cells;
 
-		// Create asymmetric-division-based cell cycle for each cell. However, we initially set all cells
-		// to be non-epithelial cells before defining our layer of pithelial cells cells.
+		/*
+		 * Create asymmetric-division-based cell cycle for each cell. However, we initially set all cells
+ 	 	 * to be non-epithelial cells before defining our layer of epithelial cells.
+		 */
 
 		for (unsigned i = 0; i<real_indices.size(); i++)
 		{
@@ -180,10 +185,11 @@ public:
 			double y = cell_population.GetLocationOfCellCentre(cell_iter)[1];
 
 
-			// We 'un-differentiate' any cells adjacent to the lumen into epithelial cells.
-			// We only consider cells within the pre-defined ring radius. Not only does this narrow down
-			// our search, but it also means we won't accidentally consider any cells on the outside and
-			// turn them into epithelial cells.
+			/* We 'un-differentiate' any cells adjacent to the lumen into epithelial cells.
+			 * We only consider cells within the pre-defined ring radius. Not only does this narrow down
+			 * our search, but it also means we won't accidentally consider any cells on the outside and
+			 * turn them into epithelial cells.
+			 */
 
 			if (pow(x-circle_centre[0],2) + pow(y-circle_centre[1],2) <= pow(ring_radius,2))
 			{
@@ -221,8 +227,9 @@ public:
 			}
 		}
 
-		// Iterate again and check that proliferative cells are also attached to gel nodes.
-		// If they aren't, kill the cell. This ensures we have a confluent layer.
+		/* Iterate again and check that proliferative cells are also attached to non-epithelial
+		 * cells. If they are not, remove them from the simulation.
+		 */
 
 		for (unsigned i = 0; i < real_indices.size(); i++)
 		{
@@ -277,8 +284,9 @@ public:
 			}
 		}
 
-		// Randomly assign cells in the layer to be Paneth cells. But first, we need to find
-		// which cells make up the layer.
+		/*
+		 * Randomly assign cells in the layer to be Paneth cells.
+		 */
 
 		std::vector<unsigned> cells_in_layer; //Initialise vector
 
@@ -296,8 +304,9 @@ public:
 			}
 		}
 
-		// For each cell in the ring, we draw a random number and assign cells to be stem cells with
-		// a probability equal to the target proportion, as defined above.
+		/* For each cell in the ring, we draw a random number and assign cells to be stem cells with
+		 * a probability equal to the target proportion, as defined above.
+		 */
 
 		for (unsigned i = 0; i < cells_in_layer.size(); i++)
 		{
@@ -354,6 +363,8 @@ public:
 		//Impose a box on the cells by adding boundary conditions.
 		c_vector<double,2> point = zero_vector<double>(2);
 		c_vector<double,2> normal = zero_vector<double>(2);
+
+		/* We fix all cells outside of the 20 x 20 box. */
 
 		//Fix cells in the region x < 0
 		normal(0) = -1.0;
