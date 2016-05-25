@@ -33,6 +33,9 @@
 #include "AbstractCellBasedTestSuite.hpp" //Needed for cell-based tests: times simulations, generates random numbers and has cell properties
 #include "CheckpointArchiveTypes.hpp" //Needed if we use GetIdentifier() method (which we do)
 #include "SmartPointers.hpp" //Enables macros to save typing
+
+/* The next set of classes are needed specifically for the simulation. */
+
 #include "HoneycombMeshGenerator.hpp" //Generates mesh
 #include "OffLatticeSimulation.hpp" //Simulates the evolution of the population
 #include "MeshBasedCellPopulationWithGhostNodes.hpp"
