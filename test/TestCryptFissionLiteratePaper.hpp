@@ -344,7 +344,7 @@ public:
 		MAKE_PTR(EpithelialLayerDataTrackingModifier<2>, p_data_tracking_modifier);
 		simulator.AddSimulationModifier(p_data_tracking_modifier);
 
-		/*/ Add linear spring force which has different spring stiffness constants, depending
+		/* Add linear spring force which has different spring stiffness constants, depending
 		 * on the pair of cells it is connecting.
 		 */
 		MAKE_PTR(EpithelialLayerLinearSpringForce<2>, p_spring_force);
@@ -356,13 +356,13 @@ public:
 		p_spring_force->SetPanethCellStiffnessRatio(stiffness_ratio);
 		simulator.AddForce(p_spring_force);
 
-		/* Add basement membrane force. */
+		/* Add the basement membrane force. */
 		MAKE_PTR(EpithelialLayerBasementMembraneForce, p_bm_force);
 		p_bm_force->SetBasementMembraneParameter(bm_force); //Equivalent to beta in SJD's papers
 		p_bm_force->SetTargetCurvature(target_curvature); //This is equivalent to 1/R in SJD's papers
 		simulator.AddForce(p_bm_force);
 
-		/* Add anoikis-based cell killer. */
+		/* Add an anoikis-based cell killer. */
 		MAKE_PTR_ARGS(EpithelialLayerAnoikisCellKiller, p_anoikis_killer, (&cell_population));
 		simulator.AddCellKiller(p_anoikis_killer);
 
