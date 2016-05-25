@@ -142,7 +142,7 @@ public:
 
 		/* Define cell types: non-epithelial cells are differentiated, all proliferative epithelial cells
 		 * will be transit cells (to define cell cycle duration). In addition, stem cells are assigned a wildtype mutation state,
-		// while Paneth cells are assigned a Paneth cell mutation state.
+		 * while Paneth cells are assigned a Paneth cell mutation state.
 		 */
 
 		boost::shared_ptr<AbstractCellProperty> p_diff_type = CellPropertyRegistry::Instance()->Get<DifferentiatedCellProliferativeType>();
