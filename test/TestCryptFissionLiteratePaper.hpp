@@ -16,7 +16,7 @@
  *
  * EMPTYLINE
  *
- * In this test we show how Chaste can be used to simulate a buckling ring of epithelial cells.
+ * In this test we show how Chaste can be used to simulate a buckling layer of epithelial cells.
  * Details of the computational model can be found in
  * Langlands et al (2016) "Paneth cell-rich regions separated by a cluster of Lgr5+ cells initiate
  * fission in the intestinal stem cell niche".
@@ -53,6 +53,10 @@
 #include "EpithelialLayerAnoikisCellKiller.hpp" //Cell killer to remove proliferative cells that have detached from ring.
 #include "EpithelialLayerDataTrackingModifier.hpp" //Modifier for all the necessary data
 
+/*
+ * Define the Chaste simulation as a test class. This is how all simulations
+ * in Chaste are defined.
+ */
 class TestCryptFissionLiteratePaper : public AbstractCellBasedTestSuite
 {
 public:
@@ -119,7 +123,7 @@ public:
 		//Obtain the locaions of real nodes
 		std::vector<unsigned> initial_real_indices = generator.GetCellLocationIndices();
 
-		//We will now define the lumen in our mesh
+		/* Define the lumen as an inner region of ghost nodes. */
 		std::vector<unsigned> real_indices;
 
 		//Sweep over the initial real indices
@@ -326,7 +330,7 @@ public:
 		//Allow output in Paraview, a program that can be used to visualise Chaste simulations
 		cell_population.AddPopulationWriter<VoronoiDataWriter>();
 
-		//Define the simulation class
+		/* Define the simulation class. */
 		OffLatticeSimulation<2> simulator(cell_population);
 
 		//Set output directory
@@ -336,11 +340,13 @@ public:
 		simulator.SetSamplingTimestepMultiple(sampling_timestep); //Set the sampling timestep multiple for animations
 		simulator.SetEndTime(end_time); //Set the number of hours to run the simulation to
 
-		// We add a modifier class to track relevant cell population numbers and shape measurements.
+		/* We add a modifier class to track relevant cell population numbers and shape measurements.*/
 		MAKE_PTR(EpithelialLayerDataTrackingModifier<2>, p_data_tracking_modifier);
 		simulator.AddSimulationModifier(p_data_tracking_modifier);
 
-		//Add linear spring force (modified to have three different spring stiffnesses, depending on the type of pair)
+		/*/ Add linear spring force which has different spring stiffness constants, depending
+		 * on the pair of cells it is connecting.
+		 */
 		MAKE_PTR(EpithelialLayerLinearSpringForce<2>, p_spring_force);
 		p_spring_force->SetCutOffLength(1.5);
 		//Set the spring stiffnesses
@@ -350,21 +356,20 @@ public:
 		p_spring_force->SetPanethCellStiffnessRatio(stiffness_ratio);
 		simulator.AddForce(p_spring_force);
 
-		//Add basement membrane force
+		/* Add basement membrane force. */
 		MAKE_PTR(EpithelialLayerBasementMembraneForce, p_bm_force);
 		p_bm_force->SetBasementMembraneParameter(bm_force); //Equivalent to beta in SJD's papers
 		p_bm_force->SetTargetCurvature(target_curvature); //This is equivalent to 1/R in SJD's papers
 		simulator.AddForce(p_bm_force);
 
-		//Add anoikis-based cell killer
+		/* Add anoikis-based cell killer. */
 		MAKE_PTR_ARGS(EpithelialLayerAnoikisCellKiller, p_anoikis_killer, (&cell_population));
 		simulator.AddCellKiller(p_anoikis_killer);
 
-		//Impose a box on the cells by adding boundary conditions.
+		/* We fix all cells outside of the 20 x 20 box. */
+
 		c_vector<double,2> point = zero_vector<double>(2);
 		c_vector<double,2> normal = zero_vector<double>(2);
-
-		/* We fix all cells outside of the 20 x 20 box. */
 
 		//Fix cells in the region x < 0
 		normal(0) = -1.0;
@@ -391,7 +396,8 @@ public:
 		MAKE_PTR_ARGS(FixedRegionPlaneBoundaryCondition<2>, p_bc4, (&cell_population, point, normal));
 		simulator.AddCellPopulationBoundaryCondition(p_bc4);
 
-		simulator.Solve(); //Run the simulation
+		/* Run the simulation. */
+		simulator.Solve();
 	}
 
 };
