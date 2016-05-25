@@ -34,24 +34,29 @@
 #include "CheckpointArchiveTypes.hpp" //Needed if we use GetIdentifier() method (which we do)
 #include "SmartPointers.hpp" //Enables macros to save typing
 
-/* The next set of classes are needed specifically for the simulation. */
+/* The next set of classes are needed specifically for the simulation, which can be found in the core code. */
 
 #include "HoneycombMeshGenerator.hpp" //Generates mesh
 #include "OffLatticeSimulation.hpp" //Simulates the evolution of the population
 #include "MeshBasedCellPopulationWithGhostNodes.hpp"
 #include "VoronoiDataWriter.hpp" //Allows us to visualise output in Paraview
 #include "DifferentiatedCellProliferativeType.hpp" //Stops cells from proliferating
-#include "StochasticTargetProportionBasedCellCycleModel.hpp" //Asymmetric-division-based cell cycle model
-#include "VolumeTrackingModifier.hpp"
 #include "TransitCellProliferativeType.hpp"
-#include "PanethCellMutationState.hpp" //Mutation class that defines Paneth cells
-#include "FixedRegionPlaneBoundaryCondition.hpp" //Boundary condition that fixes cells past a given plane
 #include "FakePetscSetup.hpp" //Forbids tests running in parallel
-#include "CellProliferativeTypesCountWriter.hpp" //Count cells that can proliferate
-#include "EpithelialLayerLinearSpringForce.hpp" //Spring force law to account for different node pairs
-#include "EpithelialLayerBasementMembraneForce.hpp" //Prototype BM force for ring based off SJD's code.
-#include "EpithelialLayerAnoikisCellKiller.hpp" //Cell killer to remove proliferative cells that have detached from ring.
+
+/* This set of classes are not part of the core code and were made for this model. */
+
+#include "StochasticTargetProportionBasedCellCycleModel.hpp" //Asymmetric-division-based cell cycle model
+#include "PanethCellMutationState.hpp" //Mutation class that defines Paneth cells
+
+#include "EpithelialLayerLinearSpringForce.hpp" //Spring force law to account for different cell type pairs
+#include "EpithelialLayerBasementMembraneForce.hpp" //Basement membrane force, as defined in Dunn et al. (2012)
+#include "EpithelialLayerAnoikisCellKiller.hpp" //Cell killer to remove proliferative cells that have fallen into the lumen
+
 #include "EpithelialLayerDataTrackingModifier.hpp" //Modifier for all the necessary data
+
+#include "FixedRegionPlaneBoundaryCondition.hpp" //Boundary condition that fixes cells past a given plane
+
 
 /*
  * Define the Chaste simulation as a test class. This is how all simulations
