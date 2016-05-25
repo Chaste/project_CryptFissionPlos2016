@@ -89,7 +89,7 @@ public:
 		double bm_force = 10.0; //Set the basement membrane stiffness
 		double target_curvature = 0.2; //Set the target curvature, i.e. how circular the layer wants to be
 
-		//Set the domain of the model
+		/* Set the domain of the model. */
 		unsigned cells_across = 24; //Desired width + a few more layers, to avoid the box collapsing
 		unsigned cells_up = 27; //Since height of each cell is 0.5*sqrt(3), we need to specify the no. of cells such that #cells*0.5*sqrt(3) = desired height
 		unsigned ghosts = 4; //Define a sufficient layer of ghost nodes to avoid infinite tessellations and hence excessively large forces
@@ -101,7 +101,7 @@ public:
 		c_vector<double, 2> translate_down = zero_vector<double>(2);
 		translate_down(1) = -1.5;
 
-		//Define circle by centre and radius
+		/* Define the initially circular lumen by centre and radius */
 		c_vector<double,2> circle_centre;
 		circle_centre(0) = 10.5;
 		circle_centre(1) = 10.0;
@@ -112,7 +112,7 @@ public:
 		double ring_radius = circle_radius + 2.0; //Radius of the ring of cells. This isn't the actual radius, just has to be large enough for later
 		assert((ring_radius <= cells_across)&&(ring_radius <= cells_up)); //Again, just in case.
 
-		//Generate the initial mesh of cells
+		/* Generate the initial mesh of cells. */
 		HoneycombMeshGenerator generator(cells_across, cells_up, ghosts);
 		MutableMesh<2,2>* p_mesh = generator.GetMesh();
 
@@ -120,11 +120,11 @@ public:
 		p_mesh->Translate(translate_left);
 		p_mesh->Translate(translate_down);
 
-		//Obtain the locaions of real nodes
-		std::vector<unsigned> initial_real_indices = generator.GetCellLocationIndices();
-
 		/* Define the lumen as an inner region of ghost nodes. */
-		std::vector<unsigned> real_indices;
+
+		std::vector<unsigned> initial_real_indices = generator.GetCellLocationIndices(); //Obtain the locations of real nodes
+
+		std::vector<unsigned> real_indices; //Vector used to define the locations of non-ghost nodes
 
 		//Sweep over the initial real indices
 		for (unsigned i = 0; i < initial_real_indices.size(); i++)
