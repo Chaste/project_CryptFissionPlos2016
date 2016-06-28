@@ -405,6 +405,11 @@ public:
 		simulator.Solve();
 	}
 
+/*
+ * To visualize the results, open a new terminal, cd to the Chaste directory, then cd to anim. Then do: java Visualize2dCentreCells /tmp/$USER/testoutput/CryptFissionLiteratePaper/results_from_time_0.
+ * You may have to do: javac Visualize2dCentreCells.java beforehand to create the java executable. You should also select the axes equal option.
+ */
+
 };
 
 #endif /* TESTCRYPTFISSIONLITERATEPAPER_HPP_ */
