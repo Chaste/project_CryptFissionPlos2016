@@ -89,6 +89,7 @@ public:
 		 */
 
 		double target_proportion = 0.3; //This corresponds to the 20% stem cell (80% Paneth cell) case
+		// double target_proportion = 0.8; //This corresponds to the 60% stem cell (40% Paneth cell) case.
 
 		//Set the BM force parameters
 		double bm_force = 10.0; //Set the basement membrane stiffness
